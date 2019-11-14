@@ -1,1 +1,3 @@
 remote_theme: https://github.com/poole/hyde
+
+theme: jekyll-theme-minimal

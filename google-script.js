@@ -9,10 +9,19 @@ function processFormResponses() {
         var spreadsheet = getSpreadsheet("1d-ti3j4MfBt9MmhI_zRLob9wMokfCuIRs2HMcmuSkVY");
         var studentList = getStudentList(spreadsheet);
         var responseSheet = getSheet(spreadsheet, "Form Response");
+        var resultSheet = getSheet(spreadsheet, "Result");
+
         var lunchDateResult = calculateVotes(studentList, responseSheet, 'lunch')
         log("lunch date result: ", lunchDateResult);
         var exceptionalCitizenResult = calculateVotes(studentList, responseSheet, 'citizen')
         log("exceptional citizen result: ", exceptionalCitizenResult);
+
+        var votingResults = {
+            'lunch': lunchDateResult,
+            'citizen': exceptionalCitizenResult
+        }
+
+        saveVotingResults(resultSheet, studentList, votingResults);
     }
     catch (e) {
         log("error occurred: ", e);
@@ -21,10 +30,16 @@ function processFormResponses() {
         log("end of script. Good bye!");
     }
 }
-
-function calculateVotes(studentList, responseSheet, type) {
+/**
+ * calculate how many votes each student has in the given category
+ * @param  {array} studentList - an array of strings containing the student names
+ * @param  {object} responseSheet - the sheet containing all the survey responses
+ * @param  {string} category - the voting category - currently only 'lunch' and 'citizen' are supported
+ * @returns {object} - a dictionary whose keys are student names and whose values are the number of votes each student got 
+ */
+function calculateVotes(studentList, responseSheet, category) {
     var targetColumn = '';
-    switch (type) {
+    switch (category) {
         case 'lunch':
             targetColumn = 'B';
             break;
@@ -32,7 +47,7 @@ function calculateVotes(studentList, responseSheet, type) {
             targetColumn = 'C';
             break;
         default:
-            throw 'invalid vote type detected: ' + type;
+            throw 'invalid vote type detected: ' + category;
     }
     var votingResult = initializeResult(studentList);
     var numResponse = getNumberOfResponses(responseSheet);
@@ -45,6 +60,14 @@ function calculateVotes(studentList, responseSheet, type) {
         });
     }
     return votingResult;
+}
+
+function saveVotingResults(resultSheet, studentList, votingResults){
+    for each (var student in studentList) {
+        var lunchVote = votingResults['lunch'][student];
+        var citizenVote = votingResults['citizen'][student];
+        resultSheet.appendRow([student, lunchVote, citizenVote]);
+    }
 }
 
 /**

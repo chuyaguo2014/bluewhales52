@@ -9,8 +9,10 @@ function processFormResponses() {
         var spreadsheet = getSpreadsheet("1d-ti3j4MfBt9MmhI_zRLob9wMokfCuIRs2HMcmuSkVY");
         var studentList = getStudentList(spreadsheet);
         var responseSheet = getSheet(spreadsheet, "Form Response");
-        var lunchDateResult = calculateLunchDateVotes(studentList, responseSheet);
-        log("final result: ", lunchDateResult);
+        var lunchDateResult = calculateVotes(studentList, responseSheet, 'lunch')
+        log("lunch date result: ", lunchDateResult);
+        var exceptionalCitizenResult = calculateVotes(studentList, responseSheet, 'citizen')
+        log("exceptional citizen result: ", exceptionalCitizenResult);
     }
     catch (e) {
         log("error occurred: ", e);
@@ -20,18 +22,29 @@ function processFormResponses() {
     }
 }
 
-function calculateLunchDateVotes(studentList, responseSheet) {
-    var lunchDateResult = initializeResult(studentList);
+function calculateVotes(studentList, responseSheet, type) {
+    var targetColumn = '';
+    switch (type) {
+        case 'lunch':
+            targetColumn = 'B';
+            break;
+        case 'citizen':
+            targetColumn = 'C';
+            break;
+        default:
+            throw 'invalid vote type detected: ' + type;
+    }
+    var votingResult = initializeResult(studentList);
     var numResponse = getNumberOfResponses(responseSheet);
     for (var i = 0; i < numResponse; i++) {
-        var response = getIndividualResponse(responseSheet, "B" + (2 + i), 0);
+        var response = getIndividualResponse(responseSheet, targetColumn + (2 + i), 0);
         var votes = response.split(",");
         votes.forEach(function (vote) {
             var name = vote.trim();
-            lunchDateResult[name] = lunchDateResult[name] + 1;
+            votingResult[name] = votingResult[name] + 1;
         });
     }
-    return lunchDateResult;
+    return votingResult;
 }
 
 /**

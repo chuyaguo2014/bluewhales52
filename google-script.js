@@ -79,7 +79,7 @@ function calculateVotes(studentList, responseSheet, category) {
 function saveVotingResults(resultSheet, studentList, votingResults){ 
     if (isValideVotingResult(votingResults)){
         deleteExistingRows(resultSheet);
-        resultSheet.appendRow(['Student Name', 'Lunch Votes', 'Exceptional Citizen Votes']);
+        resultSheet.appendRow(['Student Name', 'Lunch Votes', 'Exceptional Citizen Votes', 'Run at ' + new Date()]);
         for each(var student in studentList) {
             var lunchVote = votingResults['lunch'][student];
             var citizenVote = votingResults['citizen'][student];

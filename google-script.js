@@ -160,6 +160,10 @@ function cleanArray(rawList) {
     return result;
 }
 
+/**
+ * deletes all existing rows in the given sheet
+ * @param  {object} sheet - the sheet we are trying to clean up
+ */
 function deleteExistingRows(sheet) {
     if(sheet.getLastRow() > 0){
         sheet.deleteRows(1, sheet.getLastRow());
@@ -193,6 +197,11 @@ function initializeResult(studentList) {
     return result;
 }
 
+/**
+ * validate the votingResults
+ * @param  {object} votingResults - an object containing voting results of various categories
+ * @returns {boolean} true if both lunch category and citizen category are well-defined. False otherwise
+ */
 function isValideVotingResult(votingResults){
     return votingResults !== undefined && votingResults['lunch'] !== undefined && votingResults['citizen'] !== undefined
 }

@@ -1,1 +1,53 @@
-remote_theme: fongandrew/hydeout
+# Dependencies
+markdown:         kramdown
+highlighter:      rouge
+
+# Setup
+title:            Bluewhales52
+tagline:          'A delicious donut'
+description:      'Inspired by <a href="https://www.rd.com/advice/parenting/stop-bullying-strategy/" target="_blank">this article</a>'
+url:              https://github.com/chuyaguo2014/bluewhales52
+# baseurl:          '/hydeout'
+                  # the optional subpath of your site, e.g. "/blog"
+                  # NB: This applies to all pages in your Jekyll site.
+                  # If you want to move just the blog index pages but keep
+                  # other pages at root, see the paginate_path and
+                  # sidebar_blog_link below.
+
+author:
+  name:           'Andrew Fong'
+  url:            https://twitter.com/fongandrewc
+
+paginate:         5
+# paginate_path:    '/page:num'
+                    # Or '/blog/page:num' if you want to move your index pages
+
+plugins:
+  - jekyll-feed
+  - jekyll-gist
+  - jekyll-paginate
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - Makefile
+  - README.md
+  - .gitignore
+
+permalink:        /:year/:month/:day/:title.html
+
+defaults:
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      excerpt_separator:  <!--more-->
+      layout: post
+
+# Sidebar link settings
+# sidebar_home_link:  true
+
+disqus:
+  shortname:      hydeout
+
+# google_analytics: UA-100461102-1

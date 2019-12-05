@@ -101,3 +101,5 @@ package-lock.json
 
 build.tar
 test-results.xml
+
+credentials.json

@@ -9,18 +9,7 @@ function processFormResponses() {
         var spreadsheet = getSpreadsheet("1d-ti3j4MfBt9MmhI_zRLob9wMokfCuIRs2HMcmuSkVY");
         var studentList = getStudentList(spreadsheet);
         var responseSheet = getSheet(spreadsheet, "Form Response");
-        var numResponse = getNumberOfResponses(responseSheet);
-
-        var lunchDateResult = initializeResult(studentList);
-
-        for (var i = 0; i < numResponse; i++) {
-            var response = getIndividualResponse(responseSheet, "B" + (2 + i), 0);
-            var votes = response.split(",");
-            votes.forEach(function (vote) {
-                var name = vote.trim();
-                lunchDateResult[name] = lunchDateResult[name] + 1;
-            });
-        }
+        var lunchDateResult = calculateLunchDateVotes(studentList, responseSheet);
         log("final result: ", lunchDateResult);
     }
     catch (e) {
@@ -29,6 +18,20 @@ function processFormResponses() {
     finally {
         log("end of script. Good bye!");
     }
+}
+
+function calculateLunchDateVotes(studentList, responseSheet) {
+    var lunchDateResult = initializeResult(studentList);
+    var numResponse = getNumberOfResponses(responseSheet);
+    for (var i = 0; i < numResponse; i++) {
+        var response = getIndividualResponse(responseSheet, "B" + (2 + i), 0);
+        var votes = response.split(",");
+        votes.forEach(function (vote) {
+            var name = vote.trim();
+            lunchDateResult[name] = lunchDateResult[name] + 1;
+        });
+    }
+    return lunchDateResult;
 }
 
 /**

@@ -7,18 +7,14 @@
 function processFormResponses() {
     try {
         var spreadsheet = getSpreadsheet("1d-ti3j4MfBt9MmhI_zRLob9wMokfCuIRs2HMcmuSkVY");
-        var studentList = getStudentList(spreadsheet);
         var responseSheet = getSheet(spreadsheet, "Form Response");
         var resultSheet = getSheet(spreadsheet, "Result");
 
-        var lunchDateResult = calculateVotes(studentList, responseSheet, 'lunch')
-        log("lunch date result: ", lunchDateResult);
-        var exceptionalCitizenResult = calculateVotes(studentList, responseSheet, 'citizen')
-        log("exceptional citizen result: ", exceptionalCitizenResult);
+        var studentList = getStudentList(spreadsheet);
 
         var votingResults = {
-            'lunch': lunchDateResult,
-            'citizen': exceptionalCitizenResult
+            'lunch': calculateVotes(studentList, responseSheet, 'lunch'),
+            'citizen': calculateVotes(studentList, responseSheet, 'citizen')
         }
 
         saveVotingResults(resultSheet, studentList, votingResults);
@@ -61,12 +57,34 @@ function calculateVotes(studentList, responseSheet, category) {
     }
     return votingResult;
 }
-
-function saveVotingResults(resultSheet, studentList, votingResults){
-    for each (var student in studentList) {
-        var lunchVote = votingResults['lunch'][student];
-        var citizenVote = votingResults['citizen'][student];
-        resultSheet.appendRow([student, lunchVote, citizenVote]);
+/**
+ * saves the voting results to the given sheet
+ * @param  {object} resultSheet - the sheet to store the results
+ * @param  {array} studentList - the array of strings containing student names
+ * @param  {object} votingResults - the dictionary where keys are voting categories and values are the voting results of that category
+ * Right now, only `lunch` and `citizen` are the valid keys
+ * 
+ * Sample votingResults: 
+ * {
+ *  'lunch': {
+ *      'Jane Doe': 123, 
+ *      'John Doe': 456
+ *   }, 
+ *  'citizen': {
+ *      'Jane Doe': 456,
+ *      'John Doe': 123
+ *   }
+ * }
+ */
+function saveVotingResults(resultSheet, studentList, votingResults){ 
+    if (isValideVotingResult(votingResults)){
+        deleteExistingRows(resultSheet);
+        resultSheet.appendRow(['Student Name', 'Lunch Votes', 'Exceptional Citizen Votes']);
+        for each(var student in studentList) {
+            var lunchVote = votingResults['lunch'][student];
+            var citizenVote = votingResults['citizen'][student];
+            resultSheet.appendRow([student, lunchVote, citizenVote]);
+        }
     }
 }
 
@@ -142,6 +160,12 @@ function cleanArray(rawList) {
     return result;
 }
 
+function deleteExistingRows(sheet) {
+    if(sheet.getLastRow() > 0){
+        sheet.deleteRows(1, sheet.getLastRow());
+    }
+}
+
 /**
  * @param  {} sheet - the sheet (not the whole spreadsheet) containing the form responses
  * @returns {number} the number of responses that have been submitted
@@ -167,5 +191,9 @@ function initializeResult(studentList) {
         result[studentList[i]] = 0;
     }
     return result;
+}
+
+function isValideVotingResult(votingResults){
+    return votingResults !== undefined && votingResults['lunch'] !== undefined && votingResults['citizen'] !== undefined
 }
 

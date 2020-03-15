@@ -23,7 +23,7 @@ I do believe that, even though I might not fully understand the gun-control laws
 
 There is [a very lonely whale](https://en.wikipedia.org/wiki/52-hertz_whale) who sings at an unusual frequency of 52-hertz, which is a much higher pitch than that of the other whale species with migration patterns most closely resembling this whale's – the blue whale (10–39 Hz) or fin whale (20 Hz). It has been detected regularly in many locations since the late 1980s and appears to be the only individual emitting a whale call at this frequency. It has been described as the "world's loneliest whale". 
 
-I named this project _Bluewhale*s*52_ because 1. I hope this project helps identify the potentially lonely students in a class and 2. I hope they also find others similar to themselves so they don't feel lonely any more. 
+I named this project _Bluewhale**s**52_ because 1. I hope this project helps identify the potentially lonely students in a class and 2. I hope they also find others similar to themselves so they don't feel lonely any more. 
 
 
 

@@ -11,3 +11,5 @@ sidebar_link: false
 
 To make pages show up in the sidebar, add `sidebar_link: true` to the front
 matter.
+
+--- test ---
